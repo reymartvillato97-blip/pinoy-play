@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PINOY PLAY</title>
+<style>
+:root{--bg:#0b0d12;--panel:#151923;--text:#f5f7fb;--muted:#9ca7b8;--blue:#00aeec}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
+header{position:sticky;top:0;z-index:5;background:#10141df2;padding:15px 4%;display:flex;align-items:center;gap:18px;flex-wrap:wrap;border-bottom:1px solid #252b38}
+.logo{font-size:25px;font-weight:900;color:var(--blue);white-space:nowrap}
+.logo span{color:white}
+.search{flex:1;min-width:180px;display:flex}
+.search input{width:100%;padding:12px;border:1px solid #303746;background:#1b202c;color:white;border-radius:10px 0 0 10px;outline:none}
+.search button{border:0;background:var(--blue);padding:0 18px;border-radius:0 10px 10px 0;font-weight:bold}
+nav{display:flex;gap:8px;overflow:auto;padding:12px 4%}
+nav button,.filter{background:#1b202c;color:white;border:1px solid #303746;padding:9px 14px;border-radius:20px;cursor:pointer;white-space:nowrap}
+nav button.active,.filter.active{background:var(--blue);color:#07131a}
+main{padding:0 4% 40px}
+.hero{background:linear-gradient(110deg,#122e46,#242044);padding:25px;border-radius:18px;margin:10px 0 24px}
+.hero h1{font-size:clamp(26px,5vw,42px);margin:0 0 10px}
+.hero p{color:#d4e3f3;line-height:1.5}
+.sectionhead{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px;margin-top:16px}
+.card{background:var(--panel);border:1px solid #252b38;border-radius:13px;overflow:hidden;cursor:pointer;transition:.2s}
+.card:hover{transform:translateY(-3px);border-color:var(--blue)}
+.thumb{aspect-ratio:16/9;background:#222b3a;position:relative;overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.duration{position:absolute;right:8px;bottom:8px;background:#000c;padding:4px 7px;border-radius:5px;font-size:12px}
+.cardbody{padding:12px}
+.card h3{font-size:15px;line-height:1.4;margin:0 0 8px}
+.meta{color:var(--muted);font-size:12px}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.tags span{font-size:11px;background:#242d3d;padding:4px 7px;border-radius:5px}
+.playerbox{display:none;background:#151923;padding:16px;border-radius:14px;margin:20px 0}
+.playerbox.show{display:block}
+video{width:100%;max-height:65vh;background:black;border-radius:10px}
+.playerbox h2{font-size:20px}
+.playeractions{display:flex;gap:8px;flex-wrap:wrap}
+.playeractions button{border:0;border-radius:8px;padding:10px 13px;cursor:pointer}
+.primary{background:var(--blue);color:#06131b}
+.secondary{background:#293142;color:white}
+.notice{color:var(--muted);font-size:13px;line-height:1.6;margin:18px 0}
+footer{text-align:center;padding:24px;color:var(--muted);border-top:1px solid #252b38}
+.empty{color:var(--muted);padding:25px 0}
+@media(max-width:520px){header{gap:12px}.logo{font-size:22px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card h3{font-size:13px}.cardbody{padding:9px}.hero{padding:18px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">PINOY <span>PLAY</span> ▶</div>
+  <div class="search">
+    <input id="searchInput" type="search" placeholder="Search videos..." aria-label="Search videos">
+    <button id="searchBtn">Search</button>
+  </div>
+</header>
+
+<nav id="categories">
+  <button class="active" data-category="All">For You</button>
+  <button data-category="Animation">Animation</button>
+  <button data-category="Adventure">Adventure</button>
+  <button data-category="Drama">Drama</button>
+  <button data-category="Comedy">Comedy</button>
+  <button data-category="Favorites">♥ Favorites</button>
+  <button data-category="Watchlist">＋ Watchlist</button>
+</nav>
+
+<main>
+  <section class="hero">
+    <h1>Your next video starts here.</h1>
+    <p>Discover free-to-watch films and videos. Search the catalog, play supported videos here, and save your favorites.</p>
+  </section>
+
+  <section class="playerbox" id="playerbox">
+    <video id="videoPlayer" controls playsinline preload="metadata"></video>
+    <h2 id="playingTitle">Now playing</h2>
+    <p id="playingInfo" class="meta"></p>
+    <div class="playeractions">
+      <button class="primary" id="favoriteBtn">♥ Add Favorite</button>
+      <button class="secondary" id="watchlistBtn">＋ Add to Watchlist</button>
+      <button class="secondary" id="closePlayer">Close Player</button>
+    </div>
+    <p class="notice">If a video does not play, its source may be unavailable or may block embedding. Try another title.</p>
+  </section>
+
+  <div class="sectionhead">
+    <h2 id="listTitle">Recommended videos</h2>
+    <span class="meta" id="resultCount"></span>
+  </div>
+  <div class="grid" id="videoGrid"></div>
+  <p class="empty" id="emptyMessage" hidden>No videos found. Try another search or category.</p>
+
+  <p class="notice">PINOY PLAY is an independent video discovery demo. The listed sample videos are hosted by third parties; availability may change. Use official or authorized sources for copyrighted movies.</p>
+</main>
+
+<footer>
+  PINOY PLAY · Created by Reymart Villato
+</footer>
+
+<script>
+const videos = [
+  {
+    id:"bbb",title:"Big Buck Bunny",category:"Animation",
+    description:"A popular open movie from the Blender Foundation.",
+    poster:"https://peach.blender.org/wp-content/uploads/title_anouncement.jpg",
+    src:"https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    duration:"Open movie"
+  },
+  {
+    id:"sintel",title:"Sintel",category:"Adventure",
+    description:"An animated fantasy short film from the Blender Foundation.",
+    poster:"https://durian.blender.org/wp-content/uploads/2010/05/sintel_poster.jpg",
+    src:"https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+    duration:"Open movie"
+  },
+  {
+    id:"tears",title:"Tears of Steel",category:"Drama",
+    description:"A science-fiction short film made by the Blender Foundation.",
+    poster:"https://mango.blender.org/wp-content/uploads/2013/05/01_thom_celia_bridge.jpg",
+    src:"https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+    duration:"Open movie"
+  },
+  {
+    id:"elephants",title:"Elephant Dream",category:"Animation",
+    description:"An experimental animated film from the Blender Foundation.",
+    poster:"https://orange.blender.org/wp-content/themes/orange/images/media/gallery/s1_proog.jpg",
+    src:"https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+    duration:"Open movie"
+  }
+];
+
+const $ = id => document.getElementById(id);
+let activeCategory="All", currentVideo=null;
+let favorites=JSON.parse(localStorage.getItem("pinoyPlayFavorites")||"[]");
+let watchlist=JSON.parse(localStorage.getItem("pinoyPlayWatchlist")||"[]");
+
+function saveLists(){
+  localStorage.setItem("pinoyPlayFavorites",JSON.stringify(favorites));
+  localStorage.setItem("pinoyPlayWatchlist",JSON.stringify(watchlist));
+}
+function render(){
+  const q=$("searchInput").value.trim().toLowerCase();
+  let list=videos.filter(v=>(v.title+" "+v.category+" "+v.description).toLowerCase().includes(q));
+  if(activeCategory==="Favorites") list=list.filter(v=>favorites.includes(v.id));
+  else if(activeCategory==="Watchlist") list=list.filter(v=>watchlist.includes(v.id));
+  else if(activeCategory!=="All") list=list.filter(v=>v.category===activeCategory);
+  $("videoGrid").innerHTML="";
+  $("resultCount").textContent=list.length+" videos";
+  $("listTitle").textContent=activeCategory==="All"?"Recommended videos":activeCategory;
+  $("emptyMessage").hidden=list.length!==0;
+  list.forEach(v=>{
+    const card=document.createElement("article");
+    card.className="card";
+    card.innerHTML=`<div class="thumb"><img loading="lazy" src="${v.poster}" alt=""><span class="duration">${v.duration}</span></div><div class="cardbody"><h3></h3><div class="meta"></div><div class="tags"><span></span></div></div>`;
+    card.querySelector("h3").textContent=v.title;
+    card.querySelector(".meta").textContent=v.description;
+    card.querySelector(".tags span").textContent=v.category;
+    card.addEventListener("click",()=>playVideo(v.id));
+    $("videoGrid").appendChild(card);
+  });
+}
+function playVideo(id){
+  currentVideo=videos.find(v=>v.id===id);
+  if(!currentVideo)return;
+  $("playerbox").classList.add("show");
+  $("playingTitle").textContent=currentVideo.title;
+  $("playingInfo").textContent=currentVideo.description+" · "+currentVideo.category;
+  $("videoPlayer").src=currentVideo.src;
+  $("favoriteBtn").textContent=favorites.includes(id)?"♥ Remove Favorite":"♥ Add Favorite";
+  $("watchlistBtn").textContent=watchlist.includes(id)?"✓ Remove from Watchlist":"＋ Add to Watchlist";
+  $("playerbox").scrollIntoView({behavior:"smooth",block:"start"});
+  $("videoPlayer").play().catch(()=>{});
+}
+$("searchBtn").addEventListener("click",render);
+$("searchInput").addEventListener("input",render);
+$("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter")render()});
+$("categories").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-category]");
+  if(!b)return;
+  activeCategory=b.dataset.category;
+  document.querySelectorAll("#categories button").forEach(x=>x.classList.toggle("active",x===b));
+  render();
+});
+$("favoriteBtn").addEventListener("click",()=>{
+  if(!currentVideo)return;
+  favorites=favorites.includes(currentVideo.id)?favorites.filter(x=>x!==currentVideo.id):[...favorites,currentVideo.id];
+  saveLists();render();playVideo(currentVideo.id);
+});
+$("watchlistBtn").addEventListener("click",()=>{
+  if(!currentVideo)return;
+  watchlist=watchlist.includes(currentVideo.id)?watchlist.filter(x=>x!==currentVideo.id):[...watchlist,currentVideo.id];
+  saveLists();render();playVideo(currentVideo.id);
+});
+$("closePlayer").addEventListener("click",()=>{
+  $("videoPlayer").pause();
+  $("videoPlayer").removeAttribute("src");
+  $("videoPlayer").load();
+  $("playerbox").classList.remove("show");
+});
+render();
+</script>
+</body>
+  </html>
