@@ -2,203 +2,167 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PINOY PLAY</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PINOY TOOLS</title>
 <style>
-:root{--bg:#0b0d12;--panel:#151923;--text:#f5f7fb;--muted:#9ca7b8;--blue:#00aeec}
+:root{--blue:#087cf0;--bg:#f3f6fb;--ink:#172033;--muted:#68758a;--card:#fff}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
-header{position:sticky;top:0;z-index:5;background:#10141df2;padding:15px 4%;display:flex;align-items:center;gap:18px;flex-wrap:wrap;border-bottom:1px solid #252b38}
-.logo{font-size:25px;font-weight:900;color:var(--blue);white-space:nowrap}
-.logo span{color:white}
-.search{flex:1;min-width:180px;display:flex}
-.search input{width:100%;padding:12px;border:1px solid #303746;background:#1b202c;color:white;border-radius:10px 0 0 10px;outline:none}
-.search button{border:0;background:var(--blue);padding:0 18px;border-radius:0 10px 10px 0;font-weight:bold}
-nav{display:flex;gap:8px;overflow:auto;padding:12px 4%}
-nav button,.filter{background:#1b202c;color:white;border:1px solid #303746;padding:9px 14px;border-radius:20px;cursor:pointer;white-space:nowrap}
-nav button.active,.filter.active{background:var(--blue);color:#07131a}
-main{padding:0 4% 40px}
-.hero{background:linear-gradient(110deg,#122e46,#242044);padding:25px;border-radius:18px;margin:10px 0 24px}
-.hero h1{font-size:clamp(26px,5vw,42px);margin:0 0 10px}
-.hero p{color:#d4e3f3;line-height:1.5}
-.sectionhead{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px;margin-top:16px}
-.card{background:var(--panel);border:1px solid #252b38;border-radius:13px;overflow:hidden;cursor:pointer;transition:.2s}
-.card:hover{transform:translateY(-3px);border-color:var(--blue)}
-.thumb{aspect-ratio:16/9;background:#222b3a;position:relative;overflow:hidden}
-.thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.duration{position:absolute;right:8px;bottom:8px;background:#000c;padding:4px 7px;border-radius:5px;font-size:12px}
-.cardbody{padding:12px}
-.card h3{font-size:15px;line-height:1.4;margin:0 0 8px}
-.meta{color:var(--muted);font-size:12px}
-.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-.tags span{font-size:11px;background:#242d3d;padding:4px 7px;border-radius:5px}
-.playerbox{display:none;background:#151923;padding:16px;border-radius:14px;margin:20px 0}
-.playerbox.show{display:block}
-video{width:100%;max-height:65vh;background:black;border-radius:10px}
-.playerbox h2{font-size:20px}
-.playeractions{display:flex;gap:8px;flex-wrap:wrap}
-.playeractions button{border:0;border-radius:8px;padding:10px 13px;cursor:pointer}
-.primary{background:var(--blue);color:#06131b}
-.secondary{background:#293142;color:white}
-.notice{color:var(--muted);font-size:13px;line-height:1.6;margin:18px 0}
-footer{text-align:center;padding:24px;color:var(--muted);border-top:1px solid #252b38}
-.empty{color:var(--muted);padding:25px 0}
-@media(max-width:520px){header{gap:12px}.logo{font-size:22px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card h3{font-size:13px}.cardbody{padding:9px}.hero{padding:18px}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif}
+header{background:#101d35;color:white;padding:25px 16px;text-align:center}
+header h1{margin:0;font-size:30px;letter-spacing:1px}
+header h1 span{color:#58b8ff}
+header p{color:#d3dfef;margin:10px 0 0}
+main{max-width:850px;margin:auto;padding:18px 14px 35px}
+.tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:16px}
+.tabs button{padding:13px 7px;border:1px solid #d9e2ef;background:white;border-radius:10px;font-weight:bold;color:#34435a;cursor:pointer}
+.tabs button.active{background:var(--blue);color:white;border-color:var(--blue)}
+.panel{display:none;background:var(--card);padding:20px;border-radius:15px;box-shadow:0 5px 22px #13284b0b}
+.panel.active{display:block}
+h2{margin:0 0 8px;font-size:23px}
+.desc{color:var(--muted);font-size:14px;line-height:1.5;margin-bottom:20px}
+label{display:block;font-weight:bold;font-size:14px;margin:13px 0 6px}
+input,select{width:100%;padding:12px;border:1px solid #cdd7e5;border-radius:9px;font-size:16px;background:white;color:#172033}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+button.calculate{margin-top:18px;width:100%;padding:13px;background:var(--blue);color:white;border:0;border-radius:9px;font-weight:bold;font-size:16px;cursor:pointer}
+.result{display:none;background:#eaf4ff;border:1px solid #c9e4ff;padding:15px;border-radius:11px;margin-top:16px;line-height:1.7;overflow-wrap:anywhere}
+.result.show{display:block}
+.big{font-size:27px;font-weight:bold;color:#0766ce}
+.small{font-size:12px;color:var(--muted)}
+footer{text-align:center;padding:25px 15px;color:#718096;font-size:13px}
+footer strong{display:block;font-size:17px;color:#172033;margin:6px}
+@media(max-width:450px){.row{grid-template-columns:1fr}.panel{padding:16px}header h1{font-size:26px}}
 </style>
 </head>
 <body>
 <header>
-  <div class="logo">PINOY <span>PLAY</span> ▶</div>
-  <div class="search">
-    <input id="searchInput" type="search" placeholder="Search videos..." aria-label="Search videos">
-    <button id="searchBtn">Search</button>
-  </div>
+  <h1>PINOY <span>TOOLS</span></h1>
+  <p>Useful tools for every Filipino 🇵🇭</p>
 </header>
 
-<nav id="categories">
-  <button class="active" data-category="All">For You</button>
-  <button data-category="Animation">Animation</button>
-  <button data-category="Adventure">Adventure</button>
-  <button data-category="Drama">Drama</button>
-  <button data-category="Comedy">Comedy</button>
-  <button data-category="Favorites">♥ Favorites</button>
-  <button data-category="Watchlist">＋ Watchlist</button>
-</nav>
-
 <main>
-  <section class="hero">
-    <h1>Your next video starts here.</h1>
-    <p>Discover free-to-watch films and videos. Search the catalog, play supported videos here, and save your favorites.</p>
-  </section>
-
-  <section class="playerbox" id="playerbox">
-    <video id="videoPlayer" controls playsinline preload="metadata"></video>
-    <h2 id="playingTitle">Now playing</h2>
-    <p id="playingInfo" class="meta"></p>
-    <div class="playeractions">
-      <button class="primary" id="favoriteBtn">♥ Add Favorite</button>
-      <button class="secondary" id="watchlistBtn">＋ Add to Watchlist</button>
-      <button class="secondary" id="closePlayer">Close Player</button>
-    </div>
-    <p class="notice">If a video does not play, its source may be unavailable or may block embedding. Try another title.</p>
-  </section>
-
-  <div class="sectionhead">
-    <h2 id="listTitle">Recommended videos</h2>
-    <span class="meta" id="resultCount"></span>
+  <div class="tabs">
+    <button class="active" data-tab="salary">💵 Salary</button>
+    <button data-tab="thirteen">📅 13th Month</button>
+    <button data-tab="savings">🐷 Savings</button>
+    <button data-tab="hours">⏱️ Work Hours</button>
   </div>
-  <div class="grid" id="videoGrid"></div>
-  <p class="empty" id="emptyMessage" hidden>No videos found. Try another search or category.</p>
 
-  <p class="notice">PINOY PLAY is an independent video discovery demo. The listed sample videos are hosted by third parties; availability may change. Use official or authorized sources for copyrighted movies.</p>
+  <section class="panel active" id="salary">
+    <h2>Salary Calculator</h2>
+    <p class="desc">Estimate your pay, overtime, night differential and deductions.</p>
+    <div class="row">
+      <div><label>Daily rate (₱)</label><input id="daily" type="number" min="0" value="540"></div>
+      <div><label>Regular days worked</label><input id="days" type="number" min="0" value="13"></div>
+      <div><label>OT hours</label><input id="otHours" type="number" min="0" value="0"></div>
+      <div><label>OT rate per hour (₱)</label><input id="otRate" type="number" min="0" value="84"></div>
+      <div><label>Night differential hours</label><input id="nightHours" type="number" min="0" value="0"></div>
+      <div><label>Night differential rate (₱/hr)</label><input id="nightRate" type="number" min="0" value="0"></div>
+      <div><label>Other earnings (₱)</label><input id="otherPay" type="number" min="0" value="0"></div>
+      <div><label>Total deductions (₱)</label><input id="deduct" type="number" min="0" value="0"></div>
+    </div>
+    <button class="calculate" onclick="calcSalary()">Calculate Salary</button>
+    <div class="result" id="salaryResult" aria-live="polite"></div>
+    <p class="small">Estimate only. Enter your actual OT and night-differential rates. Regular pay assumes an 8-hour normal workday; holidays and rest-day work need separate calculations.</p>
+  </section>
+
+  <section class="panel" id="thirteen">
+    <h2>13th Month Calculator</h2>
+    <p class="desc">Estimate 13th-month pay based on eligible basic salary earned during the calendar year.</p>
+    <label>Total basic salary earned this year (₱)</label>
+    <input id="basicEarned" type="number" min="0" placeholder="e.g. 65000">
+    <button class="calculate" onclick="calcThirteen()">Calculate 13th Month</button>
+    <div class="result" id="thirteenResult" aria-live="polite"></div>
+    <p class="small">Basic formula: eligible basic salary earned ÷ 12. Overtime, night differential, allowances and other payments are generally excluded unless treated as part of basic salary under applicable rules. Actual eligibility and computation may vary.</p>
+  </section>
+
+  <section class="panel" id="savings">
+    <h2>Savings Planner</h2>
+    <p class="desc">Plan how much to save and estimate when you will reach your goal.</p>
+    <label>Savings goal (₱)</label>
+    <input id="goal" type="number" min="1" value="90000">
+    <label>Current savings (₱)</label>
+    <input id="current" type="number" min="0" value="0">
+    <label>Amount to save each payday (₱)</label>
+    <input id="perPayday" type="number" min="1" value="3000">
+    <label>Paydays per month</label>
+    <select id="paydays"><option value="1">1 payday</option><option value="2" selected>2 paydays</option><option value="4">4 paydays</option></select>
+    <button class="calculate" onclick="calcSavings()">Plan My Savings</button>
+    <div class="result" id="savingsResult" aria-live="polite"></div>
+  </section>
+
+  <section class="panel" id="hours">
+    <h2>Work Hours Calculator</h2>
+    <p class="desc">Calculate shift duration, break time and net hours worked.</p>
+    <div class="row">
+      <div><label>Shift start</label><input id="start" type="time" value="15:00"></div>
+      <div><label>Shift end</label><input id="end" type="time" value="03:00"></div>
+      <div><label>Total break (minutes)</label><input id="breakMins" type="number" min="0" value="90"></div>
+      <div><label>Regular hours per shift</label><input id="regularHours" type="number" min="0" value="8"></div>
+    </div>
+    <button class="calculate" onclick="calcHours()">Calculate Work Hours</button>
+    <div class="result" id="hoursResult" aria-live="polite"></div>
+    <p class="small">Assumes the shift ends the next day if the end time is earlier than the start time. This is an hours estimate, not an official payroll calculation.</p>
+  </section>
 </main>
 
 <footer>
-  PINOY PLAY · Created by Reymart Villato
+  Made for everyday Filipino workers
+  <strong>Created by Reymart Villato</strong>
+  © 2026 PINOY TOOLS
 </footer>
 
 <script>
-const videos = [
-  {
-    id:"bbb",title:"Big Buck Bunny",category:"Animation",
-    description:"A popular open movie from the Blender Foundation.",
-    poster:"https://peach.blender.org/wp-content/uploads/title_anouncement.jpg",
-    src:"https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-    duration:"Open movie"
-  },
-  {
-    id:"sintel",title:"Sintel",category:"Adventure",
-    description:"An animated fantasy short film from the Blender Foundation.",
-    poster:"https://durian.blender.org/wp-content/uploads/2010/05/sintel_poster.jpg",
-    src:"https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
-    duration:"Open movie"
-  },
-  {
-    id:"tears",title:"Tears of Steel",category:"Drama",
-    description:"A science-fiction short film made by the Blender Foundation.",
-    poster:"https://mango.blender.org/wp-content/uploads/2013/05/01_thom_celia_bridge.jpg",
-    src:"https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
-    duration:"Open movie"
-  },
-  {
-    id:"elephants",title:"Elephant Dream",category:"Animation",
-    description:"An experimental animated film from the Blender Foundation.",
-    poster:"https://orange.blender.org/wp-content/themes/orange/images/media/gallery/s1_proog.jpg",
-    src:"https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-    duration:"Open movie"
-  }
-];
-
-const $ = id => document.getElementById(id);
-let activeCategory="All", currentVideo=null;
-let favorites=JSON.parse(localStorage.getItem("pinoyPlayFavorites")||"[]");
-let watchlist=JSON.parse(localStorage.getItem("pinoyPlayWatchlist")||"[]");
-
-function saveLists(){
-  localStorage.setItem("pinoyPlayFavorites",JSON.stringify(favorites));
-  localStorage.setItem("pinoyPlayWatchlist",JSON.stringify(watchlist));
+const peso = n => "₱" + Number(n).toLocaleString("en-PH",{minimumFractionDigits:2,maximumFractionDigits:2});
+function val(id){return Number(document.getElementById(id).value)||0}
+function show(id,html){const e=document.getElementById(id);e.innerHTML=html;e.classList.add("show")}
+function validNonnegative(ids){
+  for(const id of ids){
+    const el=document.getElementById(id);
+    if(el.value.trim()===""||!Number.isFinite(Number(el.value))||Number(el.value)<0){
+      alert("Please enter valid non-negative numbers in all required fields.");
+      el.focus();return false;
+    }
+  }return true;
 }
-function render(){
-  const q=$("searchInput").value.trim().toLowerCase();
-  let list=videos.filter(v=>(v.title+" "+v.category+" "+v.description).toLowerCase().includes(q));
-  if(activeCategory==="Favorites") list=list.filter(v=>favorites.includes(v.id));
-  else if(activeCategory==="Watchlist") list=list.filter(v=>watchlist.includes(v.id));
-  else if(activeCategory!=="All") list=list.filter(v=>v.category===activeCategory);
-  $("videoGrid").innerHTML="";
-  $("resultCount").textContent=list.length+" videos";
-  $("listTitle").textContent=activeCategory==="All"?"Recommended videos":activeCategory;
-  $("emptyMessage").hidden=list.length!==0;
-  list.forEach(v=>{
-    const card=document.createElement("article");
-    card.className="card";
-    card.innerHTML=`<div class="thumb"><img loading="lazy" src="${v.poster}" alt=""><span class="duration">${v.duration}</span></div><div class="cardbody"><h3></h3><div class="meta"></div><div class="tags"><span></span></div></div>`;
-    card.querySelector("h3").textContent=v.title;
-    card.querySelector(".meta").textContent=v.description;
-    card.querySelector(".tags span").textContent=v.category;
-    card.addEventListener("click",()=>playVideo(v.id));
-    $("videoGrid").appendChild(card);
+document.querySelectorAll(".tabs button").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("active",b===btn));
+    document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===btn.dataset.tab));
   });
+});
+function calcSalary(){
+  const ids=["daily","days","otHours","otRate","nightHours","nightRate","otherPay","deduct"];
+  if(!validNonnegative(ids))return;
+  const regular=val("daily")*val("days");
+  const ot=val("otHours")*val("otRate");
+  const night=val("nightHours")*val("nightRate");
+  const gross=regular+ot+night+val("otherPay");
+  const net=gross-val("deduct");
+  show("salaryResult",`<div>Regular pay: <b>${peso(regular)}</b></div><div>Overtime pay: <b>${peso(ot)}</b></div><div>Night differential entered: <b>${peso(night)}</b></div><div>Other earnings: <b>${peso(val("otherPay"))}</b></div><hr><div>Estimated gross pay: <b>${peso(gross)}</b></div><div>Total deductions: <b>${peso(val("deduct"))}</b></div><div>Estimated take-home pay:</div><div class="big">${peso(net)}</div>`);
 }
-function playVideo(id){
-  currentVideo=videos.find(v=>v.id===id);
-  if(!currentVideo)return;
-  $("playerbox").classList.add("show");
-  $("playingTitle").textContent=currentVideo.title;
-  $("playingInfo").textContent=currentVideo.description+" · "+currentVideo.category;
-  $("videoPlayer").src=currentVideo.src;
-  $("favoriteBtn").textContent=favorites.includes(id)?"♥ Remove Favorite":"♥ Add Favorite";
-  $("watchlistBtn").textContent=watchlist.includes(id)?"✓ Remove from Watchlist":"＋ Add to Watchlist";
-  $("playerbox").scrollIntoView({behavior:"smooth",block:"start"});
-  $("videoPlayer").play().catch(()=>{});
+function calcThirteen(){
+  if(!validNonnegative(["basicEarned"]))return;
+  show("thirteenResult",`Estimated 13th-month pay:<div class="big">${peso(val("basicEarned")/12)}</div><div>Based on ${peso(val("basicEarned"))} eligible basic salary earned.</div>`);
 }
-$("searchBtn").addEventListener("click",render);
-$("searchInput").addEventListener("input",render);
-$("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter")render()});
-$("categories").addEventListener("click",e=>{
-  const b=e.target.closest("button[data-category]");
-  if(!b)return;
-  activeCategory=b.dataset.category;
-  document.querySelectorAll("#categories button").forEach(x=>x.classList.toggle("active",x===b));
-  render();
-});
-$("favoriteBtn").addEventListener("click",()=>{
-  if(!currentVideo)return;
-  favorites=favorites.includes(currentVideo.id)?favorites.filter(x=>x!==currentVideo.id):[...favorites,currentVideo.id];
-  saveLists();render();playVideo(currentVideo.id);
-});
-$("watchlistBtn").addEventListener("click",()=>{
-  if(!currentVideo)return;
-  watchlist=watchlist.includes(currentVideo.id)?watchlist.filter(x=>x!==currentVideo.id):[...watchlist,currentVideo.id];
-  saveLists();render();playVideo(currentVideo.id);
-});
-$("closePlayer").addEventListener("click",()=>{
-  $("videoPlayer").pause();
-  $("videoPlayer").removeAttribute("src");
-  $("videoPlayer").load();
-  $("playerbox").classList.remove("show");
-});
-render();
+function calcSavings(){
+  if(!validNonnegative(["goal","current","perPayday"]))return;
+  const goal=val("goal"),current=val("current"),amount=val("perPayday"),frequency=val("paydays");
+  if(goal<=0||amount<=0){alert("Your goal and payday savings must be greater than zero.");return}
+  const remaining=Math.max(0,goal-current);
+  const pays=Math.ceil(remaining/amount);
+  const months=Math.ceil(pays/frequency);
+  show("savingsResult",`Savings goal: <b>${peso(goal)}</b><br>Current savings: <b>${peso(current)}</b><br>Still needed: <b>${peso(remaining)}</b><hr>${remaining===0?'<div class="big">Goal reached! 🎉</div>':`Paydays needed: <b>${pays}</b><br>Estimated time: <div class="big">${months} month${months===1?"":"s"}</div>`}<div class="small">Assumes consistent deposits and excludes interest, fees and withdrawals.</div>`);
+}
+function toMinutes(value){const [h,m]=value.split(":").map(Number);return h*60+m}
+function calcHours(){
+  if(!document.getElementById("start").value||!document.getElementById("end").value||!validNonnegative(["breakMins","regularHours"]))return;
+  let start=toMinutes(document.getElementById("start").value);
+  let end=toMinutes(document.getElementById("end").value);
+  if(end<=start)end+=1440;
+  const total=(end-start)/60,br=val("breakMins")/60,net=total-br,regular=val("regularHours");
+  if(br>total){alert("Break time cannot be longer than the shift.");return}
+  show("hoursResult",`Total shift duration: <b>${total.toFixed(2)} hours</b><br>Break time: <b>${br.toFixed(2)} hours</b><br>Net hours worked: <div class="big">${net.toFixed(2)} hours</div>Regular hours entered: <b>${regular.toFixed(2)}</b><br>Hours above regular: <b>${Math.max(0,net-regular).toFixed(2)} hours</b><div class="small">Overtime eligibility and rounding depend on actual work rules and applicable law.</div>`);
+}
 </script>
 </body>
-  </html>
+</html>
